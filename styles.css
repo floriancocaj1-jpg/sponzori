@@ -441,7 +441,7 @@ img[alt="LIDIJA"]{
 
 @keyframes about-slide-continuous{
   0%{transform:translateX(0)}
-  100%{transform:translateX(-600vw)}
+  100%{transform:translateX(-1100vw)}
 }
 .about-text{max-width:680px;margin:0 auto 18px;color:#555;line-height:1.7;font-size:16px}
 
