@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const form = document.getElementById('sponsor-form');
   const result = document.getElementById('form-result');
   const resultClose = document.getElementById('result-close');
+  const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbymkL16PDgUJ-vLvzVIybdLtBQe8qV6LJymIg3bgLlU6YEsqPgd3LqmZD6rxMeAIXMd/exec';
 
   function showModal(){
     if(!modal) return;
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       levelSelect.addEventListener('change', updateOrgFieldVisibility);
     }
 
-    form.addEventListener('submit', (e)=>{
+    form.addEventListener('submit', async (e)=>{
       e.preventDefault();
       const data = new FormData(form);
       const name = data.get('name')?.toString().trim();
@@ -86,9 +87,21 @@ document.addEventListener('DOMContentLoaded', ()=>{
         alert('Unesite ime i e‑poštu.');
         return;
       }
-      // Simulate send: show thank you message
-      form.hidden = true;
-      result.hidden = false;
+      if(SHEET_ENDPOINT === 'PASTE_APPS_SCRIPT_URL_HERE'){
+        alert('Nedostaje Google Sheets endpoint.');
+        return;
+      }
+      try{
+        await fetch(SHEET_ENDPOINT, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: data
+        });
+        form.hidden = true;
+        result.hidden = false;
+      }catch(err){
+        alert('Greska pri slanju. Pokusaj ponovo.');
+      }
     });
   }
 
