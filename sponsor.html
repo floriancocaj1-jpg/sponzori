@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Postani sponzor</title>
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+  <main class="container" style="padding-top:40px;padding-bottom:40px">
+    <h1 style="margin-bottom:12px">Postani sponzor</h1>
+    <p style="color:var(--muted);margin-bottom:18px">Ispunite obrazac ispod i javit ćemo vam se.</p>
+
+    <form id="full-sponsor-form" class="sponsor-form" style="max-width:640px">
+      <label class="field">Ime i prezime
+        <input name="name" type="text" required />
+      </label>
+      <label class="field">E-pošta
+        <input name="email" type="email" required />
+      </label>
+      <label class="field">Ime tvrtke/organizacije
+        <input name="organization" type="text" />
+      </label>
+      <label class="field">Razina sponzorstva
+        <select name="level">
+          <option>Podrška</option>
+          <option>Silver</option>
+          <option>Gold</option>
+        </select>
+      </label>
+      <label class="field">Poruka
+        <textarea name="message" rows="6"></textarea>
+      </label>
+      <div style="margin-top:12px">
+        <button class="btn" type="submit">Pošalji</button>
+      </div>
+    </form>
+
+    <div id="form-feedback" hidden style="margin-top:18px">
+      <h3>Hvala — primili smo vašu prijavu.</h3>
+      <p>Uskoro ćemo vas kontaktirati.</p>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('full-sponsor-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      this.hidden = true;
+      document.getElementById('form-feedback').hidden = false;
+    });
+  </script>
+</body>
+</html>

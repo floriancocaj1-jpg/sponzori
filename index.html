@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Stranica sponzora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<script defer src="script.js"></script>
+</head>
+<body>
+
+<!-- Hamburger menu -->
+<button class="hamburger" id="hamburger" aria-label="Meni">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<nav class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <ul class="menu-list">
+    <li><a href="#start">Početak</a></li>
+    <li><a href="#gold-companies">Gold — Kompanije</a></li>
+    <li><a href="#silver-local">Silver — Lokalni biznisi</a></li>
+    <li><a href="#supporters">Podrška</a></li>
+    <li><a href="#about">O nama</a></li>
+  </ul>
+</nav>
+
+<!-- Naslov sekcije -->
+<main>
+  <section class="section-header" id="start">
+    <div class="container">
+      <img src="pictures/icone-de-coeur-violet.png" alt="Logotip zajednice" class="logo-img" />
+      <h1>Naši Najdraži <span class="highlight">Sponzori</span></h1>
+      <p class="lead">Neizmjerno smo zahvalni ovim sjajnim ljudima i tvrtkama koje omogućuju naš rad. Njihova podrška pokreće našu misiju.</p>
+      <button class="btn" id="become-sponsor">+ Postani Sponzor
+      </button>
+    </div>
+  </section>
+
+<!-- Sekcija za sponzore -->
+  <section class="partners-section" id="partners">
+    <div class="container cards">
+      <div class="cards-header">
+        <h2 class="section-title">Naši Partneri</h2>
+        <p class="muted">Glavni podrška naše inicijative</p>
+      </div>
+
+      <!-- Gold — Companies (major donors) -->
+      <div class="tier" id="gold-companies">
+        <h3 class="tier-title tier-title-silver">
+          <span class="tier-icon"><img src="pictures/gold.png" alt="Gold" /></span>
+          <span class="tier-text">Gold — Kompanije</span>
+        </h3>
+        <div class="cards-grid">
+          <div class="partner-card gold">
+            <div class="picture-placeholder"><img src="pictures/metalcore.jpg" alt="METALCORE" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">METALCORE</div>
+              <div class="social-links">
+                <a href="https://share.google/HeoLbvJzKD6AiZhUX" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card gold">
+            <div class="picture-placeholder"><img src="pictures/gradnja-invest.jpg" alt="GRADNJA-INVEST" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">GRADNJA-INVEST</div>
+              <div class="social-links">
+                <a href="https://gi2.biz/" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card gold">
+            <div class="picture-placeholder"><img src="pictures/strolit.jpg" alt="STROLIT" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">STROLIT</div>
+              <div class="social-links">
+                <a href="https://strolit.com/" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card gold text-only">
+            <div class="meta">
+              <div class="name"><span>OMI</span><span>MIX</span></div>
+            </div>
+          </div>
+
+
+          <div class="partner-card gold">
+            <div class="picture-placeholder"><img src="pictures/trafficon.jpg" alt="TRAFFICON" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">TRAFFICON</div>
+              <div class="social-links">
+                <a href="https://www.daibau.ba/trafficon_odzak" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card gold">
+            <div class="picture-placeholder"><img src="pictures/fidiger.png" alt="FIDIGER" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">FIDIGER</div>
+              <div class="social-links">
+                <a href="https://www.fidiger.ba/" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card gold">
+            <div class="picture-placeholder"><img src="pictures/sejdić commerce.jpg" alt="SEJDIĆ COMMERCE" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">SEJDIĆ COMMERCE</div>
+              <div class="social-links">
+                <a href="https://www.sejdic.ba/bs/" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card gold">
+            <div class="picture-placeholder"><img src="pictures/peplast.png" alt="PEPLAST" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">PEPLAST</div>
+              <div class="social-links">
+                <a href="https://peplast.ba/v3/" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card gold">
+            <div class="picture-placeholder"><img src="pictures/mlin majić.jpg" alt="MLIN MAJIĆ" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">MLIN MAJIĆ</div>
+              <div class="social-links">
+                <a href="https://www.mlin-majic.com/" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Silver — Local businesses -->
+      <div class="tier" id="silver-local">
+        <h3 class="tier-title">
+          <span class="tier-icon"><img src="pictures/silver.png" alt="Silver" /></span>
+          <span class="tier-text"><span>Silver —</span><span>Lokalni biznisi</span></span>
+        </h3>
+        <div class="cards-grid">
+          <div class="partner-card silver">
+            <div class="picture-placeholder"><img src="pictures/pizzeria edi.jpg" alt="Edi Pizzeria" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">Edi Pizzeria</div>
+              <div class="social-links">
+                <a href="https://www.google.com/search?q=edi+pizzeria&oq=ed&gs_lcrp=EgZjaHJvbWUqDggAEEUYJxg7GIAEGIoFMg4IABBFGCcYOxiABBiKBTIGCAEQRRhAMgYIAhBFGDkyBggDECMYJzIMCAQQABhDGIAEGIoFMgYIBRBFGDwyBggGEEUYPDIGCAcQRRg90gEIMTA5NGowajeoAgCwAgA&sourceid=chrome&ie=UTF-8" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card silver">
+            <div class="picture-placeholder"><img src="pictures/Mimoza-logo.jpg" alt="Mimoza" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">Mimoza</div>
+              <div class="social-links">
+                <a href="https://www.facebook.com/mimoza2odzak/?locale=hr_HR" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card silver text-only-large svezadom-card">
+            <div class="meta">
+              <div class="name"><span>Sve</span><span>za</span><span>dom</span></div>
+            </div>
+          </div>
+
+          <div class="partner-card silver">
+            <div class="picture-placeholder"><img src="pictures/mojlijekapoteka.jpg" alt="Moj Lijek Apoteka" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">Moj Lijek Apoteka</div>
+              <div class="social-links">
+                <a href="https://www.facebook.com/p/Moj-Lijek-Apoteka-61564797459549/" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card silver text-only mint-card">
+            <div class="meta">
+              <div class="name">Mint</div>
+            </div>
+          </div>
+
+          <div class="partner-card silver">
+            <div class="picture-placeholder"><img src="pictures/lidija.jpg" alt="LIDIJA" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">LIDIJA</div>
+            </div>
+          </div>
+
+          <div class="partner-card silver">
+            <div class="picture-placeholder"><img src="pictures/proficentar.jpg" alt="TR PROFI CENTAR" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">TR PROFI CENTAR</div>
+            </div>
+          </div>
+
+          <div class="partner-card silver bonusfarm-card">
+            <div class="picture-placeholder"><img src="pictures/bonusfarm.png" alt="BONUS - FARM" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">BONUS - FARM</div>
+              <div class="social-links">
+                <a href="https://www.instagram.com/bonus.farm.odzak/" class="social-link social-link-icon social-link-instagram" target="_blank" rel="noopener">
+                  <img src="pictures/instagram.jpg" alt="Instagram" />
+                </a>
+                <a href="https://www.facebook.com/p/Ljekarna-Bonus-farm-Od%C5%BEak-61552918021051/" class="social-link social-link-icon" target="_blank" rel="noopener">
+                  <img src="pictures/facebook.png" alt="Facebook" class="social-icon-facebook" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card silver text-only-large autoservis-card">
+            <div class="meta">
+              <div class="name"><span class="small">Autoservis</span><span class="lower">SOĆO</span></div>
+              <div class="social-links">
+                <a href="#" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card silver">
+            <div class="picture-placeholder"><img src="pictures/donerspot.png" alt="Doner spot" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">Doner spot</div>
+              <div class="social-links">
+                <a href="#" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card silver">
+            <div class="picture-placeholder"><img src="pictures/autocentarzeko.jpg" alt="Auto Centar Zeko" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">Auto Centar Zeko</div>
+              <div class="social-links">
+                <a href="#" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card silver">
+            <div class="picture-placeholder"><img src="pictures/zlatnaoaza.jpg" alt="Oaza" class="partner-img"></div>
+            <div class="meta">
+              <div class="name">Zlatna oaza</div>
+              <div class="social-links">
+                <a href="#" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="partner-card silver text-only-large">
+            <div class="meta">
+              <div class="name"><span class="small">Tokarija</span><span class="lower">Karić</span></div>
+              <div class="social-links">
+                <a href="#" class="social-link" target="_blank" rel="noopener">Posjeti web</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Supporters (individuals) -->
+      <div class="tier" id="supporters">
+        <h3 class="tier-title">
+          <span class="tier-icon"><img src="pictures/podrska.png" alt="Podrska" /></span>
+          <span class="tier-text">Podrška</span>
+        </h3>
+        <div class="cards-grid">
+          <div class="partner-card text-only-small">
+            <div class="meta">
+              <div class="name">Lein tata</div>
+            </div>
+          </div>
+
+          <div class="partner-card text-only-small">
+            <div class="meta">
+              <div class="name">babo Delić</div>
+            </div>
+          </div>
+
+          <div class="partner-card text-only-small">
+            <div class="meta">
+              <div class="name">Safeta Sejdić</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- About Us section -->
+  <section class="about-section dark-section" id="about">
+    <div class="about-slider" aria-hidden="true">
+      <div class="about-track">
+        <img src="pictures/1.jpg" alt="" />
+        <img src="pictures/2.jpg" alt="" />
+        <img src="pictures/3.jpg" alt="" />
+        <img src="pictures/4.jpg" alt="" class="about-img-4" />
+        <img src="pictures/5.jpg" alt="" />
+        <img src="pictures/6.jpg" alt="" />
+        <img src="pictures/1.jpg" alt="" />
+        <img src="pictures/2.jpg" alt="" />
+        <img src="pictures/3.jpg" alt="" />
+        <img src="pictures/4.jpg" alt="" class="about-img-4" />
+        <img src="pictures/5.jpg" alt="" />
+        <img src="pictures/6.jpg" alt="" />
+      </div>
+    </div>
+    <div class="container">
+      <h2 class="section-title">O nama</h2>
+      <p class="about-text">
+        Vjerujemo u snagu zajedništva i suradnje te od srca zahvaljujemo svima koji su nas podržali. Zahvaljujući velikodušnosti pojedinaca i organizacija koje dijele našu viziju, uspjeli smo ostvariti naše ciljeve. Svaki sponzor, bez obzira na visinu doprinosa, imao je važnu ulogu u realizaciji naše mature i ostavljanju ove večeri posebnom.
+      </p>
+      <p class="about-text">
+        Vaša podrška pokreće našu misiju i omogućuje nam da nastavimo s ovim važnim projektom. Hvala vam što ste dio naše zajednice.
+      </p>
+    </div>
+  </section>
+</main>
+
+<!-- Možete dodati još sekcija ili sadržaja ispod -->
+
+<!-- Modal for sponsor form -->
+<div class="modal" id="sponsor-modal" aria-hidden="true">
+  <div class="modal-backdrop" id="modal-backdrop"></div>
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="sponsor-title">
+    <button class="modal-close" id="modal-close" aria-label="Zatvori">×</button>
+    <h3 id="sponsor-title">Postani sponzor</h3>
+    <form id="sponsor-form" class="sponsor-form" action="https://formspree.io/f/mqedzylz" method="POST">
+      <label class="field">Ime i Prezime
+        <input name="name" type="text" required />
+      </label>
+      <label class="field">E-pošta
+        <input name="email" type="email" required />
+      </label>
+      <label class="field">Ime tvrtke/organizacije
+        <input name="organization" type="text" />
+      </label>
+      <label class="field">Razina sponzorstva
+        <select name="level">
+          <option>Podrška</option>
+          <option>Silver</option>
+          <option>Gold</option>
+        </select>
+      </label>
+      <label class="field">Poruka
+        <textarea name="message" rows="4"></textarea>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit" class="btn">Pošalji</button>
+      </div>
+    </form>
+    <div class="form-result" id="form-result" hidden>
+      <h4>Hvala vam!</h4>
+      <p>Primili smo vašu prijavu i uskoro ćemo vas kontaktirati.</p>
+      <button class="btn" id="result-close">Zatvori</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+
