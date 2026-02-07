@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     form.addEventListener('submit', async (e)=>{
       e.preventDefault();
       const data = new FormData(form);
+      const submitBtn = form.querySelector('button[type="submit"]');
       const name = data.get('name')?.toString().trim();
       const email = data.get('email')?.toString().trim();
       if(!name || !email){
@@ -92,6 +93,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
         return;
       }
       try{
+        if(submitBtn){
+          submitBtn.disabled = true;
+          submitBtn.style.display = 'none';
+        }
         await fetch(SHEET_ENDPOINT, {
           method: 'POST',
           mode: 'no-cors',
@@ -105,7 +110,19 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
   }
 
-  if(resultClose) resultClose.addEventListener('click', ()=>{ hideModal(); if(form){ form.hidden=false; result.hidden=true; form.reset(); } });
+  if(resultClose) resultClose.addEventListener('click', ()=>{
+    hideModal();
+    if(form){
+      const submitBtn = form.querySelector('button[type="submit"]');
+      form.hidden=false;
+      result.hidden=true;
+      form.reset();
+      if(submitBtn){
+        submitBtn.disabled = false;
+        submitBtn.style.display = '';
+      }
+    }
+  });
 
   // Visibility / focus behavior:
   // - on fine-pointer (desktop/tablet) use IntersectionObserver -> `.visible` (hover remains for pointer devices)

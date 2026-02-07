@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Postani sponzor</title>
+  <link rel="icon" type="image/png" href="pictures/tab-logo-circle-1200-v2.png">
   <link href="styles.css" rel="stylesheet">
 </head>
 <body>
@@ -48,6 +49,7 @@
     document.getElementById('full-sponsor-form').addEventListener('submit', async function(e){
       e.preventDefault();
       const form = this;
+      const submitBtn = form.querySelector('button[type="submit"]');
 
       if (SHEET_ENDPOINT === 'PASTE_APPS_SCRIPT_URL_HERE') {
         alert('Nedostaje Google Sheets endpoint. Zalijepi Apps Script URL u SHEET_ENDPOINT.');
@@ -55,6 +57,10 @@
       }
 
       try {
+        if(submitBtn){
+          submitBtn.disabled = true;
+          submitBtn.style.display = 'none';
+        }
         await fetch(SHEET_ENDPOINT, {
           method: 'POST',
           mode: 'no-cors',
