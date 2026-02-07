@@ -96,7 +96,13 @@ body{
 .partner-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;background:var(--card-bg);padding:14px;border-radius:16px;box-shadow:0 6px 16px rgba(29,23,37,0.05);border:1px solid rgba(0,0,0,0.05);transition:transform .36s cubic-bezier(.2,.9,.2,1),box-shadow .36s,filter .28s,opacity .28s;will-change:transform;min-height:220px;justify-content:flex-start;overflow:hidden;contain:layout paint;content-visibility:auto;contain-intrinsic-size:220px;aspect-ratio:1 / 1} 
 .partner-card .picture-placeholder{width:100%;flex:1 1 auto;min-height:0;background:linear-gradient(135deg, rgba(111,43,255,0.08), rgba(198,107,255,0.05));border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;overflow:hidden}
 .partner-card.bonusfarm-card .picture-placeholder{height:330px;flex:0 0 330px}
-.partner-card.lidija-card .picture-placeholder{flex:1 1 auto;height:auto;min-height:0}
+.partner-card.dzeni-card .picture-placeholder{height:395px;flex:0 0 395px}
+.partner-card.dzeni-card .picture-placeholder img{object-position:center calc(100% + 15px)}
+.partner-card.donerspot-card .picture-placeholder{height:360px;flex:0 0 360px}
+.partner-card.dzeni-card{min-height:230px}
+.partner-card.donerspot-card .name{margin-top:4px}
+.partner-card.donerspot-card .social-links{margin-top:6px}
+.partner-card.lidija-card .picture-placeholder{height:400px;flex:0 0 400px}
 .avatar{display:none}
 .initials{display:none}
 .meta{text-align:center;width:100%;margin-top:auto}
@@ -105,12 +111,20 @@ body{
 
 .social-links{display:flex;gap:10px;justify-content:center;margin-top:8px}
 .social-link{display:inline-flex;align-items:center;justify-content:center;height:46px;padding:0 16px;border-radius:12px;background:rgba(111,43,255,0.15);color:var(--accent1);text-decoration:none;font-weight:600;transition:all .2s;overflow:hidden}
-.social-link.social-link-icon{width:60px;height:60px;padding:0;border-radius:50%;background:transparent;overflow:hidden}
-.social-link.social-link-instagram{width:50px;height:50px;transform:translateY(10px)}
-.has-hover .social-link:hover{background:rgba(111,43,255,0.25);transform:scale(1.05)}
+.social-link.social-link-icon{width:44px;height:44px;padding:0;border-radius:50%;background:transparent;overflow:hidden;border:1px solid rgba(0,0,0,0.15)}
+.social-link.social-link-instagram{width:44px;height:44px;transform:translateY(10px)}
+.has-hover .social-link:hover{background:rgba(111,43,255,0.25);transform:scale(1.08)}
+.social-link{transition:transform .2s ease, background .2s ease, box-shadow .2s ease}
+.has-hover .social-link:hover{box-shadow:0 6px 14px rgba(0,0,0,0.15)}
 .social-link img{width:34px;height:34px;object-fit:contain;display:block}
-.social-link.social-link-icon img{width:55px;height:55px}
-.social-link img.social-icon-facebook{width:55px;height:55px}
+.social-link.social-link-icon img{width:100%;height:100%;object-fit:cover;display:block}
+.social-link img.social-icon-facebook{width:100%;height:100%;object-fit:cover}
+.social-link.social-link-dzeni{width:44px;height:44px}
+.social-link img.social-icon-dzeni{width:100%;height:100%;object-fit:cover}
+img[alt="Instagram"]{transform:scale(1.12)}
+.social-links.dzeni-links{margin-top:3px;transform:translateY(-20px)}
+.partner-card.dzeni-card .name{margin-top:1px}
+.dzeni-name{transform:translateY(-10px)}
 
 /* Text-only card (OMI-MIX): name centered, link at bottom */
 .partner-card.text-only .meta{
@@ -309,7 +323,11 @@ img[alt="LIDIJA"]{
   /* slightly larger image area to balance taller card */
   .partner-card .picture-placeholder{height:92px;border-radius:12px}
   .partner-card.bonusfarm-card .picture-placeholder{height:190px;flex:0 0 190px}
-  .partner-card.lidija-card .picture-placeholder{flex:1 1 auto;height:auto;min-height:0}
+  .partner-card.dzeni-card .picture-placeholder{height:230px;flex:0 0 230px}
+  .partner-card.donerspot-card .picture-placeholder{height:190px;flex:0 0 190px}
+  .partner-card.donerspot-card .name{margin-top:2px}
+  .partner-card.donerspot-card .social-links{margin-top:4px}
+  .partner-card.lidija-card .picture-placeholder{height:240px;flex:0 0 240px}
   .name{font-size:18px}
   .partner-card.svezadom-card .name{font-size:64px;transform:translateY(-6px)}
   .partner-card.mint-card .name{transform:translate(-2px, 3px)}
@@ -384,6 +402,13 @@ img[alt="LIDIJA"]{
 /* Hamburger menu */
 .hamburger{position:fixed;top:16px;left:16px;z-index:1100;background:transparent;border:none;width:32px;height:32px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-around;padding:0}
 .hamburger span{display:block;width:100%;height:2.5px;background:var(--accent1);border-radius:2px;transition:all .3s}
+.has-hover .hamburger:hover{
+  background:rgba(0,0,0,0.08);
+  border-radius:0;
+  transform:none;
+  padding:0;
+  box-shadow:0 0 0 5px rgba(0,0,0,0.08);
+}
 .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(8px, 8px)}
 .hamburger.active span:nth-child(2){opacity:0}
 .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(7px, -7px)}
