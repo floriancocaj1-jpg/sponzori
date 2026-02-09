@@ -26,6 +26,9 @@ body{
   color:#1e1b22;
   -webkit-font-smoothing:antialiased;
 }
+body.drawing-gesture{
+  touch-action:none;
+}
 
 .container{max-width:960px;margin:0 auto;padding:32px}
 
