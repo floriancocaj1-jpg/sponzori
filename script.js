@@ -239,6 +239,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   // Gesture trigger anywhere: draw "4" then "A" (single-stroke each) to fly
   (function setupGestureTrigger(){
+    const aboutSection = document.getElementById('about');
+    if(!aboutSection) return;
     const sequenceWindowMs = 10000;
     const minScore = 0.5;
     let lastGesture = null;
@@ -248,8 +250,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
     let activePointerId = null;
     let points = [];
     let usingTouch = false;
-    let touchMode = 'idle'; // idle | pending | drawing | scroll
+    let touchMode = 'idle'; // idle | pending | hold | drawing | scroll
     let touchStart = null;
+    let holdUntil = 0;
 
     function point(x,y){ return {x, y}; }
     function dist(a,b){ const dx=a.x-b.x, dy=a.y-b.y; return Math.hypot(dx,dy); }
@@ -393,15 +396,26 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     // Prevent scroll while drawing on touch devices
     function touchPoint(t){ return point(t.clientX, t.clientY); }
+    function isInAboutArea(p){
+      const r = aboutSection.getBoundingClientRect();
+      return p.y >= r.top && p.y <= r.bottom;
+    }
+    function isAtAboutBottom(){
+      const r = aboutSection.getBoundingClientRect();
+      return r.bottom <= window.innerHeight + 2;
+    }
+
     function onTouchStart(e){
       if(e.touches.length !== 1) return;
+      const p0 = touchPoint(e.touches[0]);
+      if(!isInAboutArea(p0)) return;
       usingTouch = true;
       drawing = false;
       touchMode = 'pending';
       activePointerId = null;
-      const p = touchPoint(e.touches[0]);
-      points = [p];
-      touchStart = p;
+      points = [p0];
+      touchStart = p0;
+      holdUntil = 0;
     }
     function onTouchMove(e){
       if(touchMode === 'idle' || e.touches.length !== 1) return;
@@ -415,7 +429,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
         const absX = Math.abs(dx);
         const absY = Math.abs(dy);
         if(absY > absX * 1.5 && absY > 8){
-          // user intends to scroll vertically
+          // vertical move: if at bottom and trying to scroll down (finger up), pause for gesture
+          if(isAtAboutBottom() && dy < -8){
+            touchMode = 'hold';
+            holdUntil = Date.now() + 800;
+            document.body.classList.add('drawing-gesture');
+            document.documentElement.classList.add('drawing-gesture');
+            e.preventDefault();
+            return;
+          }
+          // normal scroll intent
           touchMode = 'scroll';
           points = [];
           return;
@@ -427,6 +450,18 @@ document.addEventListener('DOMContentLoaded', ()=>{
           document.body.classList.add('drawing-gesture');
           document.documentElement.classList.add('drawing-gesture');
         }
+      }
+      if(touchMode === 'hold'){
+        if(Date.now() > holdUntil){
+          // no gesture started -> allow normal scroll
+          touchMode = 'scroll';
+          document.body.classList.remove('drawing-gesture');
+          document.documentElement.classList.remove('drawing-gesture');
+          points = [];
+          return;
+        }
+        // still holding to allow gesture, prevent scroll
+        e.preventDefault();
       }
       if(touchMode === 'drawing'){
         e.preventDefault();
@@ -440,6 +475,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
         document.documentElement.classList.remove('drawing-gesture');
         const result = recognize(points);
         if(result) handleRecognized(result.name, result.score);
+      }
+      if(touchMode === 'hold'){
+        document.body.classList.remove('drawing-gesture');
+        document.documentElement.classList.remove('drawing-gesture');
       }
       points = [];
       touchMode = 'idle';
