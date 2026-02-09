@@ -213,44 +213,173 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
   }
 
-  // Triple-click on About section: fly Marko Jack image across the screen
-  const aboutSection = document.getElementById('about');
-  if(aboutSection){
-    let clickCount = 0;
-    let clickTimer = null;
-
-    function getFlyer(){
-      let flyer = document.getElementById('marko-jack-flyer');
-      if(!flyer){
-        flyer = document.createElement('img');
-        flyer.id = 'marko-jack-flyer';
-        flyer.className = 'marko-jack-flyer';
-        flyer.alt = '';
-        flyer.src = 'pictures/marko_jack.png';
-        document.body.appendChild(flyer);
-      }
-      return flyer;
+  // Marko Jack fly-through helper (used by multiple triggers)
+  function getFlyer(){
+    let flyer = document.getElementById('marko-jack-flyer');
+    if(!flyer){
+      flyer = document.createElement('img');
+      flyer.id = 'marko-jack-flyer';
+      flyer.className = 'marko-jack-flyer';
+      flyer.alt = '';
+      flyer.src = 'pictures/marko_jack.png';
+      document.body.appendChild(flyer);
     }
-
-    function triggerFly(){
-      const flyer = getFlyer();
+    return flyer;
+  }
+  function triggerFly(){
+    const flyer = getFlyer();
+    flyer.classList.remove('fly');
+    // restart animation
+    void flyer.offsetWidth;
+    flyer.classList.add('fly');
+    flyer.addEventListener('animationend', () => {
       flyer.classList.remove('fly');
-      // restart animation
-      void flyer.offsetWidth;
-      flyer.classList.add('fly');
-      flyer.addEventListener('animationend', () => {
-        flyer.classList.remove('fly');
-      }, {once:true});
+    }, {once:true});
+  }
+
+  // Gesture trigger anywhere: draw "4" then "A" (single-stroke each) to fly
+  (function setupGestureTrigger(){
+    const sequenceWindowMs = 10000;
+    const minScore = 0.5;
+    let lastGesture = null;
+    let lastGestureAt = 0;
+
+    let drawing = false;
+    let activePointerId = null;
+    let points = [];
+
+    function point(x,y){ return {x, y}; }
+    function dist(a,b){ const dx=a.x-b.x, dy=a.y-b.y; return Math.hypot(dx,dy); }
+    function pathLength(pts){ let d=0; for(let i=1;i<pts.length;i++) d+=dist(pts[i-1], pts[i]); return d; }
+    function centroid(pts){
+      let x=0,y=0; pts.forEach(p=>{x+=p.x; y+=p.y;});
+      return point(x/pts.length, y/pts.length);
+    }
+    function boundingBox(pts){
+      let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+      pts.forEach(p=>{ if(p.x<minX) minX=p.x; if(p.y<minY) minY=p.y; if(p.x>maxX) maxX=p.x; if(p.y>maxY) maxY=p.y; });
+      return {minX,minY,maxX,maxY,width:maxX-minX,height:maxY-minY};
+    }
+    function resample(pts, n){
+      const I = pathLength(pts) / (n-1);
+      let D = 0;
+      const newPts = [pts[0]];
+      for(let i=1;i<pts.length;i++){
+        const d = dist(pts[i-1], pts[i]);
+        if((D + d) >= I){
+          const qx = pts[i-1].x + ((I - D)/d) * (pts[i].x - pts[i-1].x);
+          const qy = pts[i-1].y + ((I - D)/d) * (pts[i].y - pts[i-1].y);
+          const q = point(qx,qy);
+          newPts.push(q);
+          pts.splice(i, 0, q);
+          D = 0;
+        } else {
+          D += d;
+        }
+      }
+      if(newPts.length === n-1) newPts.push(pts[pts.length-1]);
+      return newPts;
+    }
+    function rotateToZero(pts){
+      const c = centroid(pts);
+      const angle = Math.atan2(c.y - pts[0].y, c.x - pts[0].x);
+      const cos = Math.cos(-angle), sin = Math.sin(-angle);
+      return pts.map(p => point(
+        (p.x - c.x)*cos - (p.y - c.y)*sin + c.x,
+        (p.x - c.x)*sin + (p.y - c.y)*cos + c.y
+      ));
+    }
+    function scaleToSquare(pts, size){
+      const box = boundingBox(pts);
+      const scale = Math.max(box.width, box.height) || 1;
+      return pts.map(p => point(p.x * (size/scale), p.y * (size/scale)));
+    }
+    function translateToOrigin(pts){
+      const c = centroid(pts);
+      return pts.map(p => point(p.x - c.x, p.y - c.y));
+    }
+    function normalize(pts){
+      const n = 64;
+      let r = resample(pts.slice(), n);
+      r = rotateToZero(r);
+      r = scaleToSquare(r, 200);
+      r = translateToOrigin(r);
+      return r;
+    }
+    function pathDistance(a,b){
+      let d=0;
+      for(let i=0;i<a.length;i++) d += dist(a[i], b[i]);
+      return d / a.length;
     }
 
-    aboutSection.addEventListener('click', () => {
-      clickCount += 1;
-      if(clickTimer) clearTimeout(clickTimer);
-      clickTimer = setTimeout(() => { clickCount = 0; }, 700);
-      if(clickCount >= 3){
-        clickCount = 0;
+    const templates = [
+      {name:'4', points: normalize([
+        point(0,0), point(0,120), point(0,70), point(80,70), point(80,0)
+      ])},
+      {name:'4', points: normalize([
+        point(80,0), point(0,60), point(80,60), point(80,120)
+      ])},
+      {name:'A', points: normalize([
+        point(0,120), point(50,0), point(100,120), point(30,70), point(80,70)
+      ])},
+      {name:'A', points: normalize([
+        point(0,120), point(50,0), point(100,120), point(100,120), point(20,70), point(80,70)
+      ])}
+    ];
+
+    function recognize(pts){
+      if(pts.length < 6) return null;
+      const cand = normalize(pts);
+      let best = {name:null, dist:Infinity};
+      templates.forEach(t => {
+        const d = pathDistance(cand, t.points);
+        if(d < best.dist) best = {name:t.name, dist:d};
+      });
+      const halfDiag = 0.5 * Math.hypot(200,200);
+      const score = 1 - (best.dist / halfDiag);
+      return {name: best.name, score};
+    }
+
+    function handleRecognized(name, score){
+      if(!name || score < minScore) return;
+      const now = Date.now();
+      if(name === '4'){
+        lastGesture = '4';
+        lastGestureAt = now;
+        return;
+      }
+      if(name === 'A' && lastGesture === '4' && (now - lastGestureAt) <= sequenceWindowMs){
+        lastGesture = null;
+        lastGestureAt = 0;
         triggerFly();
       }
-    });
-  }
+    }
+
+    function onPointerDown(e){
+      if(e.isPrimary === false) return;
+      if(e.pointerType === 'mouse' && e.button !== 0) return;
+      drawing = true;
+      activePointerId = e.pointerId;
+      points = [point(e.clientX, e.clientY)];
+    }
+    function onPointerMove(e){
+      if(!drawing || e.pointerId !== activePointerId) return;
+      const last = points[points.length-1];
+      const p = point(e.clientX, e.clientY);
+      if(dist(last, p) > 4) points.push(p);
+    }
+    function endDrawing(e){
+      if(!drawing || e.pointerId !== activePointerId) return;
+      drawing = false;
+      activePointerId = null;
+      const result = recognize(points);
+      if(result) handleRecognized(result.name, result.score);
+      points = [];
+    }
+
+    document.addEventListener('pointerdown', onPointerDown, {passive:true});
+    document.addEventListener('pointermove', onPointerMove, {passive:true});
+    document.addEventListener('pointerup', endDrawing, {passive:true});
+    document.addEventListener('pointercancel', endDrawing, {passive:true});
+  })();
 });
