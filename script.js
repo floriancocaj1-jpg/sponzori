@@ -248,6 +248,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     let activePointerId = null;
     let points = [];
     let usingTouch = false;
+    let touchMode = 'idle'; // idle | pending | drawing | scroll
+    let touchStart = null;
 
     function point(x,y){ return {x, y}; }
     function dist(a,b){ const dx=a.x-b.x, dy=a.y-b.y; return Math.hypot(dx,dy); }
@@ -394,29 +396,54 @@ document.addEventListener('DOMContentLoaded', ()=>{
     function onTouchStart(e){
       if(e.touches.length !== 1) return;
       usingTouch = true;
-      drawing = true;
+      drawing = false;
+      touchMode = 'pending';
       activePointerId = null;
-      points = [touchPoint(e.touches[0])];
-      document.body.classList.add('drawing-gesture');
-      document.documentElement.classList.add('drawing-gesture');
+      const p = touchPoint(e.touches[0]);
+      points = [p];
+      touchStart = p;
     }
     function onTouchMove(e){
-      if(!drawing) return;
-      e.preventDefault();
+      if(touchMode === 'idle' || e.touches.length !== 1) return;
       const t = e.touches[0];
       if(!t) return;
       const last = points[points.length-1];
       const p = touchPoint(t);
-      if(dist(last, p) > 4) points.push(p);
+      const dx = p.x - (touchStart ? touchStart.x : p.x);
+      const dy = p.y - (touchStart ? touchStart.y : p.y);
+      if(touchMode === 'pending'){
+        const absX = Math.abs(dx);
+        const absY = Math.abs(dy);
+        if(absY > absX * 1.5 && absY > 8){
+          // user intends to scroll vertically
+          touchMode = 'scroll';
+          points = [];
+          return;
+        }
+        if(Math.hypot(absX, absY) > 8){
+          // treat as drawing gesture
+          touchMode = 'drawing';
+          drawing = true;
+          document.body.classList.add('drawing-gesture');
+          document.documentElement.classList.add('drawing-gesture');
+        }
+      }
+      if(touchMode === 'drawing'){
+        e.preventDefault();
+        if(dist(last, p) > 4) points.push(p);
+      }
     }
     function onTouchEnd(){
-      if(!drawing) return;
-      drawing = false;
-      document.body.classList.remove('drawing-gesture');
-      document.documentElement.classList.remove('drawing-gesture');
-      const result = recognize(points);
-      if(result) handleRecognized(result.name, result.score);
+      if(touchMode === 'drawing'){
+        drawing = false;
+        document.body.classList.remove('drawing-gesture');
+        document.documentElement.classList.remove('drawing-gesture');
+        const result = recognize(points);
+        if(result) handleRecognized(result.name, result.score);
+      }
       points = [];
+      touchMode = 'idle';
+      touchStart = null;
     }
     document.addEventListener('touchstart', onTouchStart, {passive:true});
     document.addEventListener('touchmove', onTouchMove, {passive:false});
