@@ -212,4 +212,45 @@ document.addEventListener('DOMContentLoaded', ()=>{
       });
     });
   }
+
+  // Triple-click on About section: fly Marko Jack image across the screen
+  const aboutSection = document.getElementById('about');
+  if(aboutSection){
+    let clickCount = 0;
+    let clickTimer = null;
+
+    function getFlyer(){
+      let flyer = document.getElementById('marko-jack-flyer');
+      if(!flyer){
+        flyer = document.createElement('img');
+        flyer.id = 'marko-jack-flyer';
+        flyer.className = 'marko-jack-flyer';
+        flyer.alt = '';
+        flyer.src = 'pictures/marko_jack.png';
+        document.body.appendChild(flyer);
+      }
+      return flyer;
+    }
+
+    function triggerFly(){
+      const flyer = getFlyer();
+      flyer.classList.remove('fly');
+      // restart animation
+      void flyer.offsetWidth;
+      flyer.classList.add('fly');
+      flyer.addEventListener('animationend', () => {
+        flyer.classList.remove('fly');
+      }, {once:true});
+    }
+
+    aboutSection.addEventListener('click', () => {
+      clickCount += 1;
+      if(clickTimer) clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => { clickCount = 0; }, 700);
+      if(clickCount >= 3){
+        clickCount = 0;
+        triggerFly();
+      }
+    });
+  }
 });
