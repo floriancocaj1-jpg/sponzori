@@ -26,8 +26,13 @@ body{
   color:#1e1b22;
   -webkit-font-smoothing:antialiased;
 }
+html.drawing-gesture,
 body.drawing-gesture{
   touch-action:none;
+  overscroll-behavior:none;
+}
+body.drawing-gesture{
+  overflow:hidden;
 }
 
 .container{max-width:960px;margin:0 auto;padding:32px}

@@ -247,6 +247,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     let drawing = false;
     let activePointerId = null;
     let points = [];
+    let usingTouch = false;
 
     function point(x,y){ return {x, y}; }
     function dist(a,b){ const dx=a.x-b.x, dy=a.y-b.y; return Math.hypot(dx,dy); }
@@ -358,13 +359,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
     function onPointerDown(e){
       if(e.isPrimary === false) return;
       if(e.pointerType === 'mouse' && e.button !== 0) return;
+      if(e.pointerType === 'touch') usingTouch = true;
       drawing = true;
       activePointerId = e.pointerId;
       points = [point(e.clientX, e.clientY)];
       document.body.classList.add('drawing-gesture');
+      document.documentElement.classList.add('drawing-gesture');
     }
     function onPointerMove(e){
       if(!drawing || e.pointerId !== activePointerId) return;
+      if(e.pointerType === 'touch') usingTouch = true;
       const last = points[points.length-1];
       const p = point(e.clientX, e.clientY);
       if(dist(last, p) > 4) points.push(p);
@@ -374,6 +378,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       drawing = false;
       activePointerId = null;
       document.body.classList.remove('drawing-gesture');
+      document.documentElement.classList.remove('drawing-gesture');
       const result = recognize(points);
       if(result) handleRecognized(result.name, result.score);
       points = [];
@@ -385,11 +390,37 @@ document.addEventListener('DOMContentLoaded', ()=>{
     document.addEventListener('pointercancel', endDrawing, {passive:true});
 
     // Prevent scroll while drawing on touch devices
-    document.addEventListener('touchmove', (e) => {
-      if(drawing) e.preventDefault();
-    }, {passive:false});
-    document.addEventListener('touchend', () => {
+    function touchPoint(t){ return point(t.clientX, t.clientY); }
+    function onTouchStart(e){
+      if(e.touches.length !== 1) return;
+      usingTouch = true;
+      drawing = true;
+      activePointerId = null;
+      points = [touchPoint(e.touches[0])];
+      document.body.classList.add('drawing-gesture');
+      document.documentElement.classList.add('drawing-gesture');
+    }
+    function onTouchMove(e){
+      if(!drawing) return;
+      e.preventDefault();
+      const t = e.touches[0];
+      if(!t) return;
+      const last = points[points.length-1];
+      const p = touchPoint(t);
+      if(dist(last, p) > 4) points.push(p);
+    }
+    function onTouchEnd(){
+      if(!drawing) return;
+      drawing = false;
       document.body.classList.remove('drawing-gesture');
-    }, {passive:true});
+      document.documentElement.classList.remove('drawing-gesture');
+      const result = recognize(points);
+      if(result) handleRecognized(result.name, result.score);
+      points = [];
+    }
+    document.addEventListener('touchstart', onTouchStart, {passive:true});
+    document.addEventListener('touchmove', onTouchMove, {passive:false});
+    document.addEventListener('touchend', onTouchEnd, {passive:true});
+    document.addEventListener('touchcancel', onTouchEnd, {passive:true});
   })();
 });
