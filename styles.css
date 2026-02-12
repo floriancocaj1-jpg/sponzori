@@ -414,6 +414,28 @@ img[alt="LIDIJA"]{
   100%{transform:translateX(160vw)}
 }
 
+/* Easter egg: 4.a text click trigger */
+.clickable-4a{
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.clickable-4a:hover{
+  opacity: 0.7;
+}
+.has-hover .clickable-4a:hover::after{
+  content: '✨';
+  margin-left: 4px;
+  font-size: 12px;
+  display: inline-block;
+  animation: twinkle 0.4s ease;
+}
+@keyframes twinkle{
+  0%{ opacity: 0; }
+  50%{ opacity: 1; }
+  100%{ opacity: 0; }
+}
+
 /* Keyboard focus: make keyboard users see the same emphasis as hover/center */
 @media (hover: hover) and (pointer: fine) {
   .partner-card:focus-visible{outline:3px solid rgba(111,43,255,0.12);outline-offset:8px;transform:translateY(-6px) scale(var(--card-focus-scale-desktop));box-shadow:0 20px 40px rgba(17,10,40,0.12)}

@@ -237,6 +237,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }, {once:true});
   }
 
+  // Click on "4.a" to trigger fly-through
+  const clickable4a = document.getElementById('clickable-4a');
+  if(clickable4a){
+    clickable4a.addEventListener('click', (e) => {
+      e.preventDefault();
+      triggerFly();
+    });
+  }
+
   // Gesture trigger anywhere: draw "4" then "A" (single-stroke each) to fly
   (function setupGestureTrigger(){
     const aboutSection = document.getElementById('about');
@@ -364,6 +373,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     function onPointerDown(e){
       if(e.isPrimary === false) return;
       if(e.pointerType === 'mouse' && e.button !== 0) return;
+      // Only enable gesture drawing on touch, not on mouse
+      if(e.pointerType === 'mouse') return;
       if(e.pointerType === 'touch') usingTouch = true;
       drawing = true;
       activePointerId = e.pointerId;
