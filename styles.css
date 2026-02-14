@@ -26,15 +26,6 @@ body{
   color:#1e1b22;
   -webkit-font-smoothing:antialiased;
 }
-html.drawing-gesture,
-body.drawing-gesture{
-  touch-action:none;
-  overscroll-behavior:none;
-}
-body.drawing-gesture{
-  overflow:hidden;
-}
-
 .container{max-width:960px;margin:0 auto;padding:32px}
 
 .section-header{padding:60px 0 40px}
@@ -122,6 +113,8 @@ body.drawing-gesture{
 .social-link{display:inline-flex;align-items:center;justify-content:center;height:46px;padding:0 16px;border-radius:12px;background:rgba(111,43,255,0.15);color:var(--accent1);text-decoration:none;font-weight:600;transition:all .2s;overflow:hidden}
 .social-link.social-link-icon{width:44px;height:44px;padding:0;border-radius:50%;background:transparent;overflow:hidden;border:1px solid rgba(0,0,0,0.15)}
 .social-link.social-link-instagram{width:44px;height:44px;transform:translateY(10px)}
+.partner-card.bonusfarm-card .social-link.social-link-instagram{transform:translateY(0)}
+.partner-card.donerspot-card .social-link.social-link-instagram{transform:translateY(0)}
 .has-hover .social-link:hover{background:rgba(111,43,255,0.25);transform:scale(1.08)}
 .social-link{transition:transform .2s ease, background .2s ease, box-shadow .2s ease}
 .has-hover .social-link:hover{box-shadow:0 6px 14px rgba(0,0,0,0.15)}
@@ -166,19 +159,19 @@ img[alt="Instagram"]{transform:scale(1.12)}
   text-transform:uppercase;
   text-align:center;
   width:100%;
-  max-width:90%;
+  max-width:100%;
   box-sizing:border-box;
   margin-left:auto;
   margin-right:auto;
-  font-size:min(13rem, 28vw);
+  font-size:clamp(80px, 20vw, 150px);
   white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  overflow:visible;
+  text-overflow:clip;
   transform:translateY(6px);
 }
 @media(min-width:768px){
   .partner-card.mint-card .name{
-    font-size:196px;
+    font-size:150px;
   }
 }
 .partner-card.mint-card .meta{
@@ -338,7 +331,7 @@ img[alt="LIDIJA"]{
   /* slightly larger image area to balance taller card */
   .partner-card .picture-placeholder{height:92px;border-radius:12px}
   .partner-card.bonusfarm-card .picture-placeholder{height:190px;flex:0 0 190px}
-  .partner-card.dzeni-card .picture-placeholder{height:220px;flex:0 0 220px}
+  .partner-card.dzeni-card .picture-placeholder{height:225px;flex:0 0 225px}
   .partner-card.donerspot-card .picture-placeholder{height:190px;flex:0 0 190px}
   .partner-card.donerspot-card .name{margin-top:2px}
   .partner-card.donerspot-card .social-links{margin-top:4px}
