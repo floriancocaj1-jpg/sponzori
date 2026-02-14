@@ -237,11 +237,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }, {once:true});
   }
 
-  // Click on "4.a" to trigger fly-through
+  // Click / touch on "4.a" to trigger centered image sequence
   const clickable4a = document.getElementById('clickable-4a');
   if(clickable4a){
-    clickable4a.addEventListener('click', (e) => {
-      e.preventDefault();
+    function startFourAAnimation(e){
+      if(e && e.preventDefault) e.preventDefault();
       // Cycle images d/e/f/g (can override with data-images="path1,path2,...")
       const imgs = (clickable4a.dataset.images ? clickable4a.dataset.images.split(',').map(s=>s.trim()) : ['pictures/d.png','pictures/e.png','pictures/f.png','pictures/g.png']);
       const swapMs = parseInt(clickable4a.dataset.swap || '500', 10); // ms between swaps (default slowed)
@@ -274,7 +274,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
             imgEl.src = imgs[idx];
           }
           if(idx >= imgs.length - 1){
-            // reached last image, stop advancing
             if(intervalId){ clearInterval(intervalId); intervalId = null; }
           }
         }, swapMs);
@@ -292,7 +291,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
           if(overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
         }, {once:true});
       }, duration);
-    });
+    }
+
+    clickable4a.addEventListener('click', startFourAAnimation);
+    // ensure touch devices trigger immediately
+    clickable4a.addEventListener('touchend', (e) => { if(e && e.preventDefault) e.preventDefault(); startFourAAnimation(e); }, {passive:true});
   }
 
   // Gesture trigger anywhere: draw "4" then "A" (single-stroke each) to fly
