@@ -160,39 +160,25 @@ img[alt="Instagram"]{transform:scale(1.12)}
   padding-bottom:2px;
 }
 
-/* Make text-only cards (single-letter / single-word) have transparent background */
-.partner-card.text-only,
-.partner-card.text-only-large,
-.partner-card.text-only-small{
-  background: transparent;
-  box-shadow: none;
-  border: none;
-}
-.partner-card.text-only .name,
-.partner-card.text-only-large .name,
-.partner-card.text-only-small .name{
-  background: transparent;
-}
-/* If a picture-placeholder exists inside a text-only card, remove its background */
-.partner-card.text-only .picture-placeholder,
-.partner-card.text-only-large .picture-placeholder,
-.partner-card.text-only-small .picture-placeholder{
-  background: transparent;
-}
-
 /* Mint: centered and uppercase on desktop */
 .partner-card.mint-card .name{
+  display:block;
   text-transform:uppercase;
   text-align:center;
   width:100%;
+  max-width:90%;
+  box-sizing:border-box;
   margin-left:auto;
   margin-right:auto;
-  font-size:min(11rem, 24vw);
-  transform:translate(6px, -12px);
+  font-size:min(13rem, 28vw);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  transform:translateY(6px);
 }
 @media(min-width:768px){
   .partner-card.mint-card .name{
-    font-size:164px;
+    font-size:196px;
   }
 }
 .partner-card.mint-card .meta{
