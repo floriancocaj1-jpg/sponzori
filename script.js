@@ -242,7 +242,56 @@ document.addEventListener('DOMContentLoaded', ()=>{
   if(clickable4a){
     clickable4a.addEventListener('click', (e) => {
       e.preventDefault();
-      triggerFly();
+      // Cycle images d/e/f/g (can override with data-images="path1,path2,...")
+      const imgs = (clickable4a.dataset.images ? clickable4a.dataset.images.split(',').map(s=>s.trim()) : ['pictures/d.png','pictures/e.png','pictures/f.png','pictures/g.png']);
+      const swapMs = parseInt(clickable4a.dataset.swap || '500', 10); // ms between swaps (default slowed)
+      // If user supplied duration, use it; otherwise show each image once (imgs.length * swapMs) plus a short hold.
+      const userDuration = clickable4a.dataset.duration ? parseInt(clickable4a.dataset.duration, 10) : null;
+      const duration = userDuration || (imgs.length * swapMs + 800);
+
+      // prevent re-trigger while active
+      if(document.getElementById('foura-overlay')) return;
+
+      const overlay = document.createElement('div');
+      overlay.id = 'foura-overlay';
+      overlay.className = 'foura-overlay';
+
+      const imgEl = document.createElement('img');
+      imgEl.className = 'foura-anim-img';
+      imgEl.src = imgs[0] || '';
+      imgEl.style.background = 'transparent';
+      imgEl.style.boxShadow = 'none';
+      imgEl.style.borderRadius = '0';
+      overlay.appendChild(imgEl);
+      document.body.appendChild(overlay);
+
+      let idx = 0;
+      let intervalId = null;
+      if(imgs.length > 1){
+        intervalId = setInterval(()=>{
+          idx = idx + 1;
+          if(idx < imgs.length){
+            imgEl.src = imgs[idx];
+          }
+          if(idx >= imgs.length - 1){
+            // reached last image, stop advancing
+            if(intervalId){ clearInterval(intervalId); intervalId = null; }
+          }
+        }, swapMs);
+      }
+
+      // show centered (fade/scale in)
+      requestAnimationFrame(()=> overlay.classList.add('enter'));
+
+      // after duration, fade out and remove
+      setTimeout(()=>{
+        if(intervalId) clearInterval(intervalId);
+        overlay.classList.remove('enter');
+        overlay.classList.add('leave');
+        overlay.addEventListener('transitionend', ()=>{
+          if(overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        }, {once:true});
+      }, duration);
     });
   }
 
@@ -259,9 +308,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     let activePointerId = null;
     let points = [];
     let usingTouch = false;
-    let touchMode = 'idle'; // idle | pending | hold | drawing | scroll
+    let touchMode = 'idle'; // idle | pending | drawing | scroll
     let touchStart = null;
-    let holdUntil = 0;
 
     function point(x,y){ return {x, y}; }
     function dist(a,b){ const dx=a.x-b.x, dy=a.y-b.y; return Math.hypot(dx,dy); }
@@ -376,9 +424,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
       // Only enable gesture drawing on touch, not on mouse
       if(e.pointerType === 'mouse') return;
       if(e.pointerType === 'touch') usingTouch = true;
+      // Only start gesture drawing when the pointer is inside the About section
+      const startPoint = point(e.clientX, e.clientY);
+      if(!isInAboutArea(startPoint)) return;
       drawing = true;
       activePointerId = e.pointerId;
-      points = [point(e.clientX, e.clientY)];
+      points = [startPoint];
       document.body.classList.add('drawing-gesture');
       document.documentElement.classList.add('drawing-gesture');
     }
@@ -411,10 +462,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
       const r = aboutSection.getBoundingClientRect();
       return p.y >= r.top && p.y <= r.bottom;
     }
-    function isAtAboutBottom(){
-      const r = aboutSection.getBoundingClientRect();
-      return r.bottom <= window.innerHeight + 2;
-    }
 
     function onTouchStart(e){
       if(e.touches.length !== 1) return;
@@ -426,7 +473,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
       activePointerId = null;
       points = [p0];
       touchStart = p0;
-      holdUntil = 0;
     }
     function onTouchMove(e){
       if(touchMode === 'idle' || e.touches.length !== 1) return;
@@ -440,15 +486,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
         const absX = Math.abs(dx);
         const absY = Math.abs(dy);
         if(absY > absX * 1.5 && absY > 8){
-          // vertical move: if at bottom and trying to scroll down (finger up), pause for gesture
-          if(isAtAboutBottom() && dy < -8){
-            touchMode = 'hold';
-            holdUntil = Date.now() + 800;
-            document.body.classList.add('drawing-gesture');
-            document.documentElement.classList.add('drawing-gesture');
-            e.preventDefault();
-            return;
-          }
           // normal scroll intent
           touchMode = 'scroll';
           points = [];
@@ -462,18 +499,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
           document.documentElement.classList.add('drawing-gesture');
         }
       }
-      if(touchMode === 'hold'){
-        if(Date.now() > holdUntil){
-          // no gesture started -> allow normal scroll
-          touchMode = 'scroll';
-          document.body.classList.remove('drawing-gesture');
-          document.documentElement.classList.remove('drawing-gesture');
-          points = [];
-          return;
-        }
-        // still holding to allow gesture, prevent scroll
-        e.preventDefault();
-      }
       if(touchMode === 'drawing'){
         e.preventDefault();
         if(dist(last, p) > 4) points.push(p);
@@ -486,10 +511,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
         document.documentElement.classList.remove('drawing-gesture');
         const result = recognize(points);
         if(result) handleRecognized(result.name, result.score);
-      }
-      if(touchMode === 'hold'){
-        document.body.classList.remove('drawing-gesture');
-        document.documentElement.classList.remove('drawing-gesture');
       }
       points = [];
       touchMode = 'idle';

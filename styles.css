@@ -160,6 +160,26 @@ img[alt="Instagram"]{transform:scale(1.12)}
   padding-bottom:2px;
 }
 
+/* Make text-only cards (single-letter / single-word) have transparent background */
+.partner-card.text-only,
+.partner-card.text-only-large,
+.partner-card.text-only-small{
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+.partner-card.text-only .name,
+.partner-card.text-only-large .name,
+.partner-card.text-only-small .name{
+  background: transparent;
+}
+/* If a picture-placeholder exists inside a text-only card, remove its background */
+.partner-card.text-only .picture-placeholder,
+.partner-card.text-only-large .picture-placeholder,
+.partner-card.text-only-small .picture-placeholder{
+  background: transparent;
+}
+
 /* Mint: centered and uppercase on desktop */
 .partner-card.mint-card .name{
   text-transform:uppercase;
@@ -371,7 +391,7 @@ img[alt="LIDIJA"]{
 /* Slower about slider on mobile */
 @media (max-width:767px){
   .about-track{
-    animation-duration: 120s;
+    animation-duration: 70s;
   }
 }
 
@@ -554,3 +574,36 @@ img[alt="LIDIJA"]{
 /* Pulse animation for button feedback */
 .pulse{animation:pulse .6s ease}
 @keyframes pulse{0%{transform:translateY(0);box-shadow:0 10px 20px rgba(111,43,255,0.12)}50%{transform:translateY(-3px);box-shadow:0 16px 30px rgba(111,43,255,0.18)}100%{transform:translateY(0);box-shadow:0 10px 20px rgba(111,43,255,0.12)}}
+
+/* 4.a alternating image animation overlay (uses pictures/a.png and pictures/b.png) */
+.foura-overlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  z-index:2500;
+  background:transparent;
+  opacity:0;
+  transition:opacity .28s ease, transform .28s ease;
+}
+.foura-overlay.enter{opacity:1}
+.foura-overlay.leave{opacity:0;transform:scale(.98)}
+.foura-anim-img{
+  width:60vw;
+  max-width:520px;
+  height:auto;
+  border-radius:0;
+  box-shadow:none;
+  display:block;
+  transform:scale(.92);
+  transition:transform .28s ease, opacity .28s ease;
+  opacity:0.98;
+}
+.foura-anim-img{background:transparent}
+.foura-overlay.enter .foura-anim-img{transform:scale(1);opacity:1}
+
+@media(max-width:767px){
+  .foura-anim-img{width:86vw;max-width:420px}
+}
