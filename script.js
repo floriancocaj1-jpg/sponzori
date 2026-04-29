@@ -20,6 +20,55 @@ document.addEventListener('DOMContentLoaded', ()=>{
   });
 });
 
+// Poruke profesora slider: center a single card, animate only when there are 2+ cards.
+document.addEventListener('DOMContentLoaded', ()=>{
+  const track = document.querySelector('.pp-track');
+  if(!track) return;
+
+  const originalCards = Array.from(track.children).filter(el => {
+    return el.classList.contains('pp-card') && !el.hasAttribute('data-pp-clone');
+  });
+
+  if(originalCards.length <= 1){
+    track.classList.add('is-single');
+    return;
+  }
+
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    track.classList.add('is-single');
+    return;
+  }
+
+  const existingClones = Array.from(track.children).some(el => el.hasAttribute('data-pp-clone'));
+  if(!existingClones){
+    originalCards.forEach(card => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute('data-pp-clone', 'true');
+      clone.setAttribute('aria-hidden', 'true');
+      track.appendChild(clone);
+    });
+  }
+
+  function centerStartCard(){
+    const firstCard = originalCards[0];
+    if(!firstCard) return;
+    const cardWidth = firstCard.getBoundingClientRect().width;
+    const startOffset = Math.max(0, (window.innerWidth - cardWidth) / 2);
+    track.style.setProperty('--pp-start-offset', `${startOffset}px`);
+  }
+
+  track.classList.add('is-looping');
+  centerStartCard();
+  window.addEventListener('resize', centerStartCard, {passive:true});
+  window.addEventListener('orientationchange', centerStartCard, {passive:true});
+
+  if('ResizeObserver' in window){
+    const ro = new ResizeObserver(centerStartCard);
+    ro.observe(originalCards[0]);
+    track._ppResizeObserver = ro;
+  }
+});
+
 // Modal behavior for sponsor form
 document.addEventListener('DOMContentLoaded', ()=>{
   const openBtn = document.getElementById('become-sponsor');
@@ -240,8 +289,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   // Click / touch on "4.a" to trigger centered image sequence
   const clickable4a = document.getElementById('clickable-4a');
   if(clickable4a){
-    function startFourAAnimation(e){
-      if(e && e.preventDefault) e.preventDefault();
+    function startFourAAnimation(){
       // Cycle images d/e/f/g (can override with data-images="path1,path2,...")
       const imgs = (clickable4a.dataset.images ? clickable4a.dataset.images.split(',').map(s=>s.trim()) : ['pictures/d.png','pictures/e.png','pictures/f.png','pictures/g.png']);
       const swapMs = parseInt(clickable4a.dataset.swap || '500', 10); // ms between swaps (default slowed)
@@ -294,8 +342,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
 
     clickable4a.addEventListener('click', startFourAAnimation);
-    // ensure touch devices trigger immediately
-    clickable4a.addEventListener('touchend', (e) => { if(e && e.preventDefault) e.preventDefault(); startFourAAnimation(e); }, {passive:true});
   }
 
 });

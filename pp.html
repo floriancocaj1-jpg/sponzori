@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Poruke profesora</title>
+<link rel="icon" type="image/png" href="pictures/tab-logo-circle-1200-v2.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<script defer src="script.js"></script>
+<style>
+body.pp-page{
+  min-height:100vh;
+  overflow-x:hidden;
+  overflow-y:hidden;
+  background:
+    radial-gradient(circle at top, rgba(198,107,255,0.3), transparent 35%),
+    linear-gradient(135deg, #0f172a, #1e293b 45%, #312e81 100%);
+  color:#fff;
+}
+
+.pp-shell{
+  min-height:100vh;
+  display:flex;
+  align-items:stretch;
+  justify-content:center;
+  padding:0;
+}
+
+.pp-stage{
+  width:100%;
+  min-height:100vh;
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:88px 0 28px;
+}
+
+.pp-stage::before,
+.pp-stage::after{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:120px;
+  z-index:2;
+  pointer-events:none;
+}
+
+.pp-stage::before{
+  left:0;
+  background:linear-gradient(90deg, rgba(15,23,42,1), rgba(15,23,42,0));
+}
+
+.pp-stage::after{
+  right:0;
+  background:linear-gradient(270deg, rgba(49,46,129,1), rgba(49,46,129,0));
+}
+
+.pp-header{
+  text-align:center;
+  margin-bottom:36px;
+  padding:0 24px;
+}
+
+.pp-kicker{
+  display:inline-block;
+  margin-bottom:12px;
+  padding:8px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.12);
+  color:#ddd6fe;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+.pp-header h1{
+  margin:0 0 12px;
+  font-size:clamp(34px, 7vw, 64px);
+  line-height:1;
+}
+
+.pp-header p{
+  max-width:720px;
+  margin:0 auto;
+  color:rgba(255,255,255,0.74);
+  font-size:clamp(16px, 2vw, 18px);
+}
+
+.pp-track{
+  --pp-gap:28px;
+  --pp-gap-half:14px;
+  --pp-start-offset:0px;
+  display:flex;
+  justify-content:center;
+  gap:var(--pp-gap);
+  width:100%;
+  animation:none;
+  padding:18px 0;
+  transform:translateX(0);
+}
+
+.pp-track.is-looping{
+  justify-content:flex-start;
+  width:max-content;
+  animation:pp-slide 28s linear infinite;
+}
+
+.pp-track.is-looping:hover{
+  animation-play-state:paused;
+}
+
+.pp-card{
+  width:min(340px, calc(100vw - 72px));
+  min-height:42vh;
+  padding:28px;
+  border-radius:26px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.68), rgba(244,244,255,0.56));
+  color:#111827;
+  box-shadow:0 24px 50px rgba(15,23,42,0.28);
+  border:1px solid rgba(255,255,255,0.22);
+  backdrop-filter:blur(12px);
+}
+
+.pp-card h2{
+  margin:0 0 16px;
+  font-size:22px;
+  color:#111827;
+}
+
+.pp-card p{
+  margin:0;
+  color:#374151;
+  line-height:1.65;
+  font-size:16px;
+}
+
+.pp-card span{
+  display:block;
+  margin-top:22px;
+  color:#6f2bff;
+  font-weight:700;
+}
+
+.pp-actions{
+  margin-top:auto;
+  padding:24px;
+  text-align:center;
+}
+
+.pp-actions a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:220px;
+  text-decoration:none;
+}
+
+@keyframes pp-slide{
+  0%{transform:translateX(var(--pp-start-offset))}
+  100%{transform:translateX(calc(var(--pp-start-offset) - 50% - var(--pp-gap-half)))}
+}
+
+@media (max-width:767px){
+  .pp-shell{
+    min-height:100vh;
+  }
+
+  .pp-stage::before,
+  .pp-stage::after{
+    width:40px;
+  }
+
+  .pp-stage{
+    padding:82px 0 20px;
+  }
+
+  .pp-track{
+    --pp-gap:18px;
+    --pp-gap-half:9px;
+    animation-duration:32s;
+  }
+
+  .pp-card{
+    width:min(300px, calc(100vw - 56px));
+    min-height:38vh;
+    padding:24px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .pp-track{
+    animation:none;
+    width:auto;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+}
+</style>
+</head>
+<body class="pp-page">
+
+<button class="hamburger" id="hamburger" aria-label="Meni">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<nav class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <ul class="menu-list">
+    <li><a href="index.html#start">Pocetak</a></li>
+    <li><a href="index.html#gold-companies">Gold - Kompanije</a></li>
+    <li><a href="index.html#silver-local">Silver - Lokalni biznisi</a></li>
+    <li><a href="index.html#supporters">Podrska</a></li>
+    <li><a href="index.html#about">O nama</a></li>
+    <li><a href="pp.html">Poruke profesora</a></li>
+  </ul>
+</nav>
+
+<main class="pp-shell">
+  <section class="pp-stage" aria-labelledby="pp-title">
+    <header class="pp-header">
+      <div class="pp-kicker">Uspomene za kraj</div>
+      <h1 id="pp-title">Poruke profesora</h1>
+      <p>Riječi koje ostaju s nama i nakon posljednjeg zvona.</p>
+    </header>
+
+    <div class="pp-track">
+      <article class="pp-card">
+        <p>Pred vam su novi putevi i izazovi, koračajte njima hrabro, s  vjerom u sebe i svoje mogućnosti. Sa sobom ponesite samo lijepe uspomene, ali i stečeno znanje da ostvarite svoje snove.</p>
+        <span>Profesorica Sabina</span>
+      </article>
+    </div>
+
+    <div class="pp-actions">
+      <a class="btn" href="index.html#start">Nazad na sponzore</a>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>

@@ -481,6 +481,7 @@ img[alt="LIDIJA"]{
 
 /* About section */
 .about-section{position:relative;padding:60px 0 80px;background:var(--bg-light);overflow:hidden;min-height:90vh}
+.about-section{touch-action:pan-y}
 .about-section::after{
   content:"";
   position:absolute;
@@ -495,6 +496,7 @@ img[alt="LIDIJA"]{
   overflow:hidden;
   z-index:0;
   opacity:1;
+  pointer-events:none;
 }
 .about-track{
   display:flex;
@@ -509,6 +511,7 @@ img[alt="LIDIJA"]{
   object-fit:contain;
   flex:0 0 auto;
   display:block;
+  pointer-events:none;
 }
 .about-track img.about-img-4{transform:translateY(-20px)}
 .about-section.dark-section{
