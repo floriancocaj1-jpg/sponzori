@@ -44,7 +44,7 @@
   </section>
 
 <!-- Sekcija za sponzore -->
-  <section class="partners-section" id="partners">
+  <section class="partners-section finisher-header" id="partners">
     <div class="container cards">
       <div class="cards-header">
         <h2 class="section-title">Naši Partneri</h2>
@@ -426,6 +426,53 @@
   </div>
 </div>
 
+<script src="finisher-header.es5.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function(){
+  if(typeof FinisherHeader === 'undefined') return;
+  new FinisherHeader({
+    "className": "partners-section",
+    "count": 31,
+    "size": {
+      "min": 1091,
+      "max": 1500,
+      "pulse": 0
+    },
+    "speed": {
+      "x": {
+        "min": 0.6,
+        "max": 3
+      },
+      "y": {
+        "min": 0.6,
+        "max": 3
+      }
+    },
+    "colors": {
+      "background": "#d4c5e0",
+      "particles": [
+        "#ffc7aa",
+        "#87ddfe",
+        "#aeacff",
+        "#ff9ebb",
+        "#f2a2a2",
+        "#ffdcb1",
+        "#fff2d0",
+        "#e0ffd1"
+      ]
+    },
+    "blending": "lighten",
+    "opacity": {
+      "center": 0.6,
+      "edge": 0
+    },
+    "skew": -2,
+    "shapes": [
+      "c"
+    ]
+  });
+});
+</script>
 </body>
 </html>
 
