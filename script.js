@@ -69,6 +69,49 @@ document.addEventListener('DOMContentLoaded', ()=>{
   }
 });
 
+// Pocetna pozadina: napravi neklikabilni kolaz od svih postojecih sponzorskih kartica.
+document.addEventListener('DOMContentLoaded', ()=>{
+  const track = document.getElementById('hero-sponsors-track');
+  const sourceCards = Array.from(document.querySelectorAll('.partners-section .partner-card'));
+  if(!track || !sourceCards.length) return;
+
+  function makeHeroCard(card){
+    const item = document.createElement('div');
+    item.className = 'hero-sponsor-card';
+    if(card.classList.contains('gold')) item.classList.add('gold');
+    if(card.classList.contains('silver')) item.classList.add('silver');
+
+    const img = card.querySelector('.partner-img');
+    if(img){
+      const imageWrap = document.createElement('div');
+      imageWrap.className = 'hero-sponsor-image';
+      const image = img.cloneNode(true);
+      image.removeAttribute('class');
+      imageWrap.appendChild(image);
+      item.appendChild(imageWrap);
+    }
+
+    const name = card.querySelector('.name');
+    if(name){
+      const label = document.createElement('div');
+      label.className = 'hero-sponsor-name';
+      label.textContent = name.textContent.trim();
+      item.appendChild(label);
+    }
+
+    return item;
+  }
+
+  const heroCards = sourceCards.map(makeHeroCard);
+  for(let pass = 0; pass < 2; pass += 1){
+    heroCards.forEach(card => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      track.appendChild(clone);
+    });
+  }
+});
+
 // Modal behavior for sponsor form
 document.addEventListener('DOMContentLoaded', ()=>{
   const openBtn = document.getElementById('become-sponsor');
